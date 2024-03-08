@@ -90,7 +90,45 @@ const destroy = async (req, res) => {
         return res.status(500).json({
             data: {},
             success: false,
-            message: "Failed to datete the user",
+            message: "Failed to delete the user",
+            err: error
+        });
+    }
+}
+
+const signIn = async (req, res) => {
+    try {
+        const response = await userService.signIn(req.body);
+        return res.status(201).json({
+            data: response,
+            success: true,
+            message: "Successfully signin the user",
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Failed to delete the user",
+            err: error
+        });
+    }
+}
+
+const signUp = async (req, res) => {
+    try {
+        const response = await userService.singUp(req.headers["access-token"]);
+        return res.status(201).json({
+            data: response,
+            success: true,
+            message: "Successfully signin the user",
+            err: {}
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            success: false,
+            message: "Failed to delete the user",
             err: error
         });
     }
@@ -101,5 +139,7 @@ module.exports = {
     get,
     getAll,
     update,
-    destroy
+    destroy,
+    signUp,
+    signIn
 };
