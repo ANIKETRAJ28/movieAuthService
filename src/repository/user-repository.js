@@ -1,4 +1,4 @@
-const { User } = require("../models/index");
+const { User, Role } = require("../models/index");
 const CrudRepository = require("./crud-repository");
 
 class UserRepository extends CrudRepository {
@@ -14,6 +14,24 @@ class UserRepository extends CrudRepository {
             return response;
         } catch (error) {
             console.log("Something went wrong in repository layer");
+            throw error;
+        }
+    }
+
+    async get(id) {
+        try {
+            const response = await User.findOne({
+                where: {id},
+                include: [
+                    {
+                        model: Role,
+                        as: "role"
+                    }
+                ]
+            });
+            return response;
+        } catch (error) {
+            console.log("Something went wrong in crud repository");
             throw error;
         }
     }

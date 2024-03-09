@@ -33,18 +33,28 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       require: true,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: true
+      }
     },
     password: {
       type: DataTypes.STRING,
       require: true,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: [6,15]
+      }
     },
     phone: {
       type: DataTypes.STRING,
       require: true,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        len: [10,10],
+        isInt: true
+      }
     }
   }, {
     sequelize,
@@ -52,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.beforeCreate((user) => {
+    user.password = bcrypt.hashSync(user.password, SALT);
+  });
+
+  User.beforeBulkCreate((user) => {
     user.password = bcrypt.hashSync(user.password, SALT);
   });
 
